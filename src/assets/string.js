@@ -1,0 +1,70 @@
+const Splassstring = {
+  btnTitleEn: 'Get Started',
+  skipEn: 'Skip',
+  nextEn: 'Next',
+  btnTitleHn: 'शुरू करें',
+  skipHn: 'छोड़ें',
+  nextHn: 'अगला',
+};
+export default Splassstring;
+
+export const loginString = {
+  loginEn: 'Login',
+  loginHi: 'लॉगिन',
+
+  registerEn: 'Register',
+  registerHi: 'रजिस्टर करें',
+
+  messageEn: 'Enter your Email',
+  messageHi: 'अपना ईमेल दर्ज करें',
+
+  passwordEn: 'Enter your Password',
+  passwordHi: 'अपना पासवर्ड दर्ज करें',
+
+  message1En: 'You will get a code via SMS',
+  message1Hi: 'आपको एसएमएस के माध्यम से एक कोड प्राप्त होगा',
+
+  RememberEn: 'Remember me',
+  RememberHi: 'याद रखें',
+
+  OtpMessageEn: 'Enter OTP Code',
+  OtpMessageHi: 'ओटीपी कोड दर्ज करें',
+
+  OtpSubMessageEn: 'Sent to',
+  OtpSubMessageHi: 'पर भेजा गया',
+
+  resendEn: 'Resend Code',
+  resendHi: 'कोड फिर से भेजें',
+
+  userNameEn: 'Your Name',
+  userNameHi: 'आपका नाम',
+
+  createAccountEn: 'Create Your Account',
+  createAccountHi: 'अपना खाता बनाएं',
+
+  greetingMessageEn: 'Welcome Back!',
+  greetingMessageHi: 'वापसी पर आपका स्वागत है!',
+
+  instructionMessageEn: 'Please login with your presonal information',
+  instructionMessageHi: 'कृपया अपनी व्यक्तिगत जानकारी के साथ लॉगिन करें',
+
+  switchSignUpEn: "Don't have an Account?",
+  switchSignUpHi: 'खाता नहीं है?',
+
+  signUpEn: 'SignUp',
+  signUpHi: 'साइन अप करें',
+};
+
+export const signUpString = {
+  messageEn: 'Create an account so you can chat with your friends.',
+  messageHi: 'एक खाता बनाएं ताकि आप अपने दोस्तों से चैट कर सकें।',
+
+  createAccountEn: 'Create Your Account',
+  createAccountHi: 'अपना खाता बनाएं',
+
+  confirmPasswordEn: 'Confirm your Password',
+  confirmPasswordHi: 'अपना पासवर्ड पुष्टि करें',
+
+  alredyAccountEn: 'Already have an Account?',
+  alredyAccountHi: 'पहले से खाता है?',
+};

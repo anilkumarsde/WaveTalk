@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "583648924601",
+    "project_id": "wavetalkapp",
+    "storage_bucket": "wavetalkapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:583648924601:android:349446704b13b6cf485c68",
+        "android_client_info": {
+          "package_name": "com.wavetalk"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDapIhlBgO5U4vlhfzdPiVgH7GcwxZIQO8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
