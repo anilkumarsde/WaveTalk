@@ -49,25 +49,25 @@ const SignUp = () => {
 
     if (!email) {
       setEmailError('Email is required');
-      setEmail('')
-      setPassword('')
+      setEmail('');
+      setPassword('');
       valid = false;
     } else if (!emailRegex.test(email)) {
       setEmailError('Enter a valid email');
-      setEmail('')
-      setPassword('')
+      setEmail('');
+      setPassword('');
       valid = false;
     }
 
     if (!Password) {
       setPassWordError('Password is required');
-      setEmail('')
-      setPassword('')
+      setEmail('');
+      setPassword('');
       valid = false;
     } else if (Password.length < 6) {
       setPassWordError('Password must be at least 6 characters');
-      setEmail('')
-      setPassword('')
+      setEmail('');
+      setPassword('');
       valid = false;
     }
 
@@ -89,35 +89,41 @@ const SignUp = () => {
     navigation.goBack();
   }
 
-  async function signUphandler(email, password) {
+  function moveToregister(email, password) {
     if (validate()) {
-      setLoding(true);
-      try {
-        const userCredential = await auth().createUserWithEmailAndPassword(
-          email,
-          password,
-        );
-        console.log('User created successfully', userCredential);
-
-        await AsyncStorage.setItem('isSignUp', 'true'); // ✅ store as string
-        Toast.show('Signup Successful');
-
-        navigation.navigate('UserInfo');
-      } catch (error) {
-        if (error.code === 'auth/email-already-in-use') {
-          Toast.show('Email is already in use');
-          setEmail('');
-          setPassword('');
-          setconfirmPassword('');
-        } else {
-          Toast.show('Something went wrong');
-          console.error('Signup Error:', error);
-        }
-      } finally {
-        setLoding(false);
-      }
+      navigation.navigate('UserInfo',{email,password});
     }
   }
+
+  // async function signUphandler(email, password) {
+  //   if (validate()) {
+  //     setLoding(true);
+  //     try {
+  //       const userCredential = await auth().createUserWithEmailAndPassword(
+  //         email,
+  //         password,
+  //       );
+  //       console.log('User created successfully', userCredential);
+
+  //       await AsyncStorage.setItem('isSignUp', 'true'); // ✅ store as string
+  //       Toast.show('Signup Successful');
+
+  //       navigation.navigate('UserInfo');
+  //     } catch (error) {
+  //       if (error.code === 'auth/email-already-in-use') {
+  //         Toast.show('Email is already in use');
+  //         setEmail('');
+  //         setPassword('');
+  //         setconfirmPassword('');
+  //       } else {
+  //         Toast.show('Something went wrong');
+  //         console.error('Signup Error:', error);
+  //       }
+  //     } finally {
+  //       setLoding(false);
+  //     }
+  //   }
+  // }
   return (
     <View style={style.container}>
       <AppStatusBar background={colors[theme].blue} />
@@ -232,7 +238,7 @@ const SignUp = () => {
             btnTilte={
               language === 'en' ? loginString.signUpEn : loginString?.signUpHi
             }
-            onPress={() => signUphandler(email, Password)}
+            onPress={() => moveToregister(email, Password)}
           />
         </View>
 

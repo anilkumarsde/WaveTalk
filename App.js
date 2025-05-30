@@ -12,7 +12,7 @@ const App = () => {
 
   useEffect(() => {
     setTheme(theme);
-  }, [theme]);
+  }, []);
 
   return (
     <NavigationContainer>

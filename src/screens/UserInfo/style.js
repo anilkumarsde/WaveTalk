@@ -1,14 +1,25 @@
 import {Dimensions, StyleSheet} from 'react-native';
-import {getThemeColors} from '../../assets/colors';
+import colors, {getThemeColors} from '../../assets/colors';
 import Fonts from '../../assets/Fonts';
 
 const {height, width} = Dimensions.get('window');
 const getStyle = theme => {
-  const Color = getThemeColors(theme);
+  const Color = colors[theme];
   return StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: Color.background,
+    },
+    loadingOverlay: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: 'rgba(0, 0, 0, 0.4)', // semi-transparent black
+      justifyContent: 'center',
+      alignItems: 'center',
+      zIndex: 100,
     },
     topWrapper: {
       height: '40%',
@@ -22,7 +33,7 @@ const getStyle = theme => {
       alignItems: 'center',
     },
     bottomWrapper: {
-      height: '40',
+      height: '40%',
       marginTop: height * 0.1,
       paddingHorizontal: width * 0.04,
     },
@@ -84,12 +95,12 @@ const getStyle = theme => {
     },
     inputField: {
       fontSize: width * 0.05,
-      color: Color.text3,
-      //   marginTop: height * 0.01,
+      color: Color.text2,
+      marginTop: height * 0.01,
       fontFamily: Fonts.RobotoSemiBold,
       // paddingTop: height * 0.03,
     },
-    nextBtn:{
+    nextBtn: {
       backgroundColor: Color.blue1,
       height: height * 0.06,
       width: height * 0.06,
@@ -98,7 +109,7 @@ const getStyle = theme => {
       alignItems: 'center',
       alignSelf: 'flex-end',
       marginTop: height * 0.02,
-    }
+    },
   });
 };
 export default getStyle;

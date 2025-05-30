@@ -8,7 +8,6 @@ import Login from '../screens/Login/Login';
 import Otp from '../screens/Otp/Otp';
 import SignUp from '../screens/SignUp/SignUp';
 import UserInfo from '../screens/UserInfo/UserInfo';
-import Test from '../screens/Test/Test';
 
 const Stack = createNativeStackNavigator();
 

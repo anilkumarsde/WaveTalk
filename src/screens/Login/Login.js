@@ -51,24 +51,24 @@ const Login = () => {
     setPasswordError('');
     if (!email) {
       setEmailError('Email is required');
-      setEmail('')
-      setPassword('')
+      setEmail('');
+      setPassword('');
       valid = false;
     } else if (!emailRegex.test(email)) {
       setEmailError('Enter a Valid Email');
-      setEmail('')
-      setPassword('')
+      setEmail('');
+      setPassword('');
       valid = false;
     }
     if (!Password) {
       setPasswordError('Password is required');
-      setEmail('')
-      setPassword('')
+      setEmail('');
+      setPassword('');
       valid = false;
     } else if (Password.length < 6) {
       setPasswordError('Password must be of 6 digits');
-      setEmail('')
-      setPassword('')
+      setEmail('');
+      setPassword('');
       valid = false;
     }
     return valid;
@@ -87,7 +87,7 @@ const Login = () => {
         );
         await AsyncStorage.setItem('isSignUp', 'true');
         Toast.show('Login Successful');
-        navigation.navigate('BottomTabNavigator')
+        navigation.navigate('BottomTabNavigator');
       } catch (error) {
         console.log('🔥 Error Code:', error.code);
         console.log('🔥 Error Message:', error.message);
@@ -99,6 +99,7 @@ const Login = () => {
           case 'auth/user-not-found':
             Toast.show('No user found with this email');
             break;
+
           case 'auth/wrong-password':
             Toast.show('Wrong password');
             break;
