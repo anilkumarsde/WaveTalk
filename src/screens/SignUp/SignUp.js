@@ -1,4 +1,10 @@
-import {View, Text, TouchableOpacity, ActivityIndicator} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ActivityIndicator,
+  Alert,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import getStyle from './styles';
 import AppStatusBar from '../../components/AppStatusBar';
@@ -15,6 +21,8 @@ import auth from '@react-native-firebase/auth';
 import useThemeStore from '../../store/themeStore';
 import Toast from 'react-native-simple-toast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import firestore from '@react-native-firebase/firestore';
+import UserInfo from '../UserInfo/UserInfo';
 
 const SignUp = () => {
   const [language, setLanguage] = useState('en');
@@ -89,9 +97,23 @@ const SignUp = () => {
     navigation.goBack();
   }
 
-  function moveToregister(email, password) {
+  async function checkEmail(email, password) {
     if (validate()) {
-      navigation.navigate('UserInfo',{email,password});
+      try {
+        const snapshot = await firestore()
+          .collection('user')
+          .where('email', '==', email)
+          .get();
+
+        if (snapshot.empty) {
+          navigation.navigate('UserInfo', {email, password});
+        } else {
+          Alert.alert('Email already exists');
+        }
+      } catch (error) {
+        console.log('Something went wrong', error);
+        Alert.alert('Error', 'Something went wrong while checking email.');
+      }
     }
   }
 
@@ -238,7 +260,7 @@ const SignUp = () => {
             btnTilte={
               language === 'en' ? loginString.signUpEn : loginString?.signUpHi
             }
-            onPress={() => moveToregister(email, Password)}
+            onPress={() => checkEmail(email, Password)}
           />
         </View>
 

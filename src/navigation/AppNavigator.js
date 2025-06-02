@@ -8,6 +8,7 @@ import Login from '../screens/Login/Login';
 import Otp from '../screens/Otp/Otp';
 import SignUp from '../screens/SignUp/SignUp';
 import UserInfo from '../screens/UserInfo/UserInfo';
+import ChatConversation from '../screens/ChatConversation/ChatConversation';
 
 const Stack = createNativeStackNavigator();
 
@@ -24,6 +25,7 @@ const AppNavigator = () => {
       <Stack.Screen name="Otp" component={Otp} />
       <Stack.Screen name="UserInfo" component={UserInfo} />
       <Stack.Screen name="BottomTabNavigator" component={BottomTabNavigator} />
+      <Stack.Screen name="ChatConversation" component={ChatConversation} />
     </Stack.Navigator>
   );
 };

@@ -6,5 +6,6 @@ const images = {
   intro2: require('../../images/intro2.png'),
   intro3: require('../../images/intro3.png'),
   intro4: require('../../images/intro4.png'),
+  logo: require('../../images/Logo.png'),
 };
 export default images;

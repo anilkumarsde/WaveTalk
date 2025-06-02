@@ -1,65 +1,135 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  useColorScheme,
+  TouchableOpacity,
+  FlatList,
+  Dimensions,
+} from 'react-native';
+import React, {useEffect, useId, useState} from 'react';
+import useThemeStore from '../../store/themeStore';
+import getStyle from './styles';
+import AppStatusBar from '../../components/AppStatusBar';
+import colors from '../../assets/colors';
+import images from '../../assets/image';
+import Feather from 'react-native-vector-icons/Feather';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import AddfriendModal from '../../components/AddfriendModal';
 import firestore from '@react-native-firebase/firestore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useNavigation} from '@react-navigation/native';
+
+const {height, width} = Dimensions.get('window');
 
 const Chat = () => {
-  const [users, setUsers] = useState([]);
+  const setTheme = useThemeStore(state => state.setTheme);
+  const theme = useColorScheme();
+  const [isVisible, setVisible] = useState(false);
+  const [userData, setUserData] = useState([]);
+  const [userId, setUserId] = useState('');
+
+  const style = getStyle(theme);
+  const Color = colors[theme];
+  const navigation = useNavigation();
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    setTheme(theme);
+  }, [theme, setTheme]);
+
+  useEffect(() => {
+    async function getId() {
+      const id = await AsyncStorage.getItem('userid');
+      setUserId(id);
+      console.log(id, 'id of curent user');
+    }
+    function getUserCollection() {
       try {
-        const snapshot = await firestore().collection('user').get();
-        const userList = snapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setUsers(userList);
+        const unsubscribe = firestore()
+          .collection('user')
+          .onSnapshot(data => {
+            const userlist = [];
+            data.forEach(user => {
+              userlist.push({
+                id: user.id,
+                ...user.data(),
+              });
+              console.log(user.data());
+            });
+            setUserData(userlist.filter(user => user.id !== userId));
+            console.log(userData, 'userdata ');
+          });
+
+        console.log('data fetched');
+        return () => unsubscribe();
       } catch (error) {
-        console.log('Error fetching users: ', error);
+        console.log('some went wrong', error);
       }
-    };
+    }
 
-    fetchUsers();
-  }, []);
+    getId();
+    if (useId) getUserCollection();
+  }, [userId]);
 
-  const renderItem = ({ item }) => (
-    <View style={styles.userCard}>
-      <Text style={styles.userName}>{item.name}</Text>
-      <Text style={styles.userEmail}>{item.email}</Text>
-    </View>
-  );
+  function moveToChatconversation() {
+    navigation.navigate('ChatConversation');
+  }
+
+  const renderItem = ({item}) => {
+    return (
+      <TouchableOpacity
+        activeOpacity={0.5}
+        style={style.card}
+        onPress={() => moveToChatconversation()}>
+        <FontAwesome6
+          name="user-large"
+          size={width * 0.08}
+          color={colors[theme].text2}
+          style={style.icon}
+        />
+        <View>
+          <Text style={style.name}>{item.name}</Text>
+          <Text style={style.email}>{item.email}</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  };
 
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={users}
-        keyExtractor={item => item.id}
-        renderItem={renderItem}
+    <View style={style.container}>
+      <AppStatusBar background={colors[theme].lightBlue} />
+      {/* modal for add Friend */}
+      <AddfriendModal
+        isVisible={isVisible}
+        theme={theme}
+        onClose={() => setVisible(false)}
       />
+      <View style={style.headrWrapper}>
+        <View style={style.leftWrapper}>
+          <Image source={images.logo} style={style.logo} />
+          <Text style={style.title}>Wave Talk</Text>
+        </View>
+        <View style={style.rightWrapper}>
+          <Feather name={'search'} color={Color.white} size={20} />
+          <TouchableOpacity onPress={() => setVisible(!isVisible)}>
+            <AntDesign name="plus" size={20} color={Color.white} />
+          </TouchableOpacity>
+          {/*  */}
+        </View>
+      </View>
+      <View style={style.userWrapper}>
+        <FlatList
+          data={userData}
+          keyExtractor={item => item.id}
+          renderItem={renderItem}
+          contentContainerStyle={{paddingBottom: height * 0.02}}
+          showsVerticalScrollIndicator={false}
+        />
+      </View>
+      <Text>hi</Text>
     </View>
   );
 };
 
 export default Chat;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: '#fff',
-  },
-  userCard: {
-    padding: 16,
-    borderBottomWidth: 1,
-    borderColor: '#ccc',
-  },
-  userName: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  userEmail: {
-    fontSize: 14,
-    color: 'gray',
-  },
-});
-

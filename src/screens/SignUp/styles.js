@@ -52,6 +52,8 @@ const getStyle = theme => {
     },
     loginTxt: {
       color: Color.lightBlue,
+      fontFamily:Fonts.RobotoMedium,
+      fontSize:width*0.04
     },
     inputBoxWrapper: {
       marginBottom: height * 0.015,

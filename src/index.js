@@ -15,3 +15,8 @@ export {default as Chat} from './screens/Chat/Chat';
 export {default as Group} from './screens/Group/Group';
 export {default as Profile} from './screens/Profile/Profile';
 export {default as More} from './screens/More/More';
+
+//chat screen
+export {default as ChatConversation} from './screens/ChatConversation/ChatConversation';
+
+

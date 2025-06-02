@@ -68,3 +68,11 @@ export const signUpString = {
   alredyAccountEn: 'Already have an Account?',
   alredyAccountHi: 'पहले से खाता है?',
 };
+
+export const chatScreen = {
+  addFrindeEn: 'Add Friend',
+  CreateGroupEn: 'Create Group',
+  addFrindeHi: 'मित्र जोड़ें',
+  CreateGroupHi: 'समूह बनाएं',
+};
+

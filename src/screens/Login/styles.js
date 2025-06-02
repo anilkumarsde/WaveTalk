@@ -77,13 +77,15 @@ const getStyle = theme => {
     },
     signUpTxt: {
       color: Color.lightBlue,
+      fontFamily: Fonts.RobotoMedium,
+      fontSize: width * 0.04,
     },
-    errorMsg:{
-      fontFamily:Fonts.RobotoLight,
-      color:'red',
+    errorMsg: {
+      fontFamily: Fonts.RobotoLight,
+      color: 'red',
       fontSize: width * 0.03,
-      paddingLeft:width*0.06
-    }
+      paddingLeft: width * 0.06,
+    },
   });
 };
 export default getStyle;
