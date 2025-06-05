@@ -74,5 +74,6 @@ export const chatScreen = {
   CreateGroupEn: 'Create Group',
   addFrindeHi: 'मित्र जोड़ें',
   CreateGroupHi: 'समूह बनाएं',
+  messageEn: 'Message',
+  messageHi: 'संदेश',
 };
-

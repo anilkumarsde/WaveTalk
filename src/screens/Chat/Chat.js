@@ -72,8 +72,17 @@ const Chat = () => {
     if (useId) getUserCollection();
   }, [userId]);
 
-  function moveToChatconversation() {
-    navigation.navigate('ChatConversation');
+  function moveToChatconversation(person, userId) {
+    const personId=person.id;
+    const chatid = [userId, personId].sort().join('_');
+    console.log('chat id ', chatid);
+
+    navigation.navigate('ChatConversation', {
+      chatid,
+      currentUserId: userId,
+      otherUserId: personId,
+      outerUserName:person.name
+    });
   }
 
   const renderItem = ({item}) => {
@@ -81,7 +90,7 @@ const Chat = () => {
       <TouchableOpacity
         activeOpacity={0.5}
         style={style.card}
-        onPress={() => moveToChatconversation()}>
+        onPress={() => moveToChatconversation(item, userId)}>
         <FontAwesome6
           name="user-large"
           size={width * 0.08}

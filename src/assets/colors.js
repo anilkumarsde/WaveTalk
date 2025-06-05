@@ -27,8 +27,10 @@ const light = {
   bordercolor: '#1CB4F8',
   RemembeTxt: '#2C2D3A',
   otpMessage: '#2C2D3A',
-  ModalBackground:'#ffffff',
-  ModalIconColor:'#A0A1B6'
+  ModalBackground: '#ffffff',
+  ModalIconColor: '#A0A1B6',
+  iconColor: '#FFFFFF',
+  inputFiledColor: '#F0F0F3',
 };
 
 const dark = {
@@ -60,8 +62,10 @@ const dark = {
   smsTxt: '#ffffff',
   RemembeTxt: '#FFFFFF',
   otpMessage: '#ffffff',
-  ModalBackground:'#4A4B62',
-  ModalIconColor:'#A0A1B6'
+  ModalBackground: '#4A4B62',
+  ModalIconColor: '#A0A1B6',
+  iconColor: '#3E3E3E',
+  inputFiledColor: '#545454',
 };
 
 export const getThemeColors = theme => {
