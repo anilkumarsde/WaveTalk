@@ -61,7 +61,7 @@ const getStyle = theme => {
     inputContainer: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginHorizontal: width * 0.04,
+      marginHorizontal: width * 0.02,
       marginBottom: height * 0.02,
       backgroundColor: Color.inputFiledColor,
 
@@ -76,7 +76,8 @@ const getStyle = theme => {
     },
     mainWrapper: {
       height: '70%',
-      // backgroundColor:'red'
+      backgroundColor: Color.chatScreenBack,
+      marginHorizontal: width * 0.02,
     },
 
     inputField: {
@@ -90,36 +91,48 @@ const getStyle = theme => {
       marginLeft: width * 0.01,
     },
     messageList: {
-      padding: 10,
+      padding: height * 0.01,
       paddingBottom: 60, // space for input box
     },
 
     messageBubble: {
       maxWidth: '70%',
-      padding: 10,
-      borderRadius: 10,
-      marginBottom: 10,
+      paddingHorizontal: width * 0.04,
+      paddingVertical: height * 0.007,
+      borderRadius: width * 0.02,
+      marginBottom: height * 0.016,
+      // flexDirection:'row'
     },
 
     leftBubble: {
-      backgroundColor: '#eee',
+      backgroundColor: Color.white,
       alignSelf: 'flex-start',
     },
 
     rightBubble: {
       backgroundColor: '#007AFF',
       alignSelf: 'flex-end',
+      // position:'absolute',
+      // bottom:0
+    },
+    timeText: {
+      fontFamily: Fonts.RobotoLight,
+      marginTop: height * 0.001,
+      fontSize: width * 0.025,
+      alignSelf: 'flex-end',
     },
 
     messageText: {
       // color: Color.text,
+      fontFamily: Fonts.RobotoRegular,
+      fontSize: width * 0.037,
     },
-    white:{
-      color:'white'
+    white: {
+      color: 'white',
     },
-    black:{
-      color:'red'
-    }
+    black: {
+      color: 'black',
+    },
   });
 };
 export default getStyle;

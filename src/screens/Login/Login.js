@@ -85,6 +85,10 @@ const Login = () => {
           email,
           password,
         );
+        const uid = userCredential.user.uid;
+        await AsyncStorage.setItem('userid', `${uid}`);
+        console.log('user id at login time', uid);
+
         await AsyncStorage.setItem('isSignUp', 'true');
         Toast.show('Login Successful');
         navigation.navigate('BottomTabNavigator');

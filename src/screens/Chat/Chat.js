@@ -20,6 +20,7 @@ import AddfriendModal from '../../components/AddfriendModal';
 import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
+import HeaderCom from '../../components/HeaderCom';
 
 const {height, width} = Dimensions.get('window');
 
@@ -73,7 +74,7 @@ const Chat = () => {
   }, [userId]);
 
   function moveToChatconversation(person, userId) {
-    const personId=person.id;
+    const personId = person.id;
     const chatid = [userId, personId].sort().join('_');
     console.log('chat id ', chatid);
 
@@ -81,7 +82,7 @@ const Chat = () => {
       chatid,
       currentUserId: userId,
       otherUserId: personId,
-      outerUserName:person.name
+      outerUserName: person.name,
     });
   }
 
@@ -114,19 +115,7 @@ const Chat = () => {
         theme={theme}
         onClose={() => setVisible(false)}
       />
-      <View style={style.headrWrapper}>
-        <View style={style.leftWrapper}>
-          <Image source={images.logo} style={style.logo} />
-          <Text style={style.title}>Wave Talk</Text>
-        </View>
-        <View style={style.rightWrapper}>
-          <Feather name={'search'} color={Color.white} size={20} />
-          <TouchableOpacity onPress={() => setVisible(!isVisible)}>
-            <AntDesign name="plus" size={20} color={Color.white} />
-          </TouchableOpacity>
-          {/*  */}
-        </View>
-      </View>
+      <HeaderCom isVisible={isVisible} setVisible={setVisible} />
       <View style={style.userWrapper}>
         <FlatList
           data={userData}

@@ -10,5 +10,6 @@ const images = {
   Videocamera: require('../../images/Videocamera.png'),
   VideocameraLight: require('../../images/videocameraLight.png'),
   PhoneLight: require('../../images/PhoneLight.png'),
+  Logo: require('../../images/Logo.png'),
 };
 export default images;

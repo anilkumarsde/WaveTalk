@@ -148,28 +148,41 @@ const ChatConversation = () => {
         <FlatList
           data={message}
           keyExtractor={item => item.id}
-          renderItem={({item}) => (
-            <View
-              style={[
-                style.messageBubble,
-                item.senderId === currentUserId
-                  ? style.rightBubble
-                  : style.leftBubble,
-              ]}>
-              <Text
+          renderItem={({item}) => {
+            const messageTime =
+              item.createdAt && item.createdAt.toDate
+                ? item.createdAt.toDate().toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })
+                : '';
+
+            return (
+              <View
                 style={[
-                  style.messageText,
-                  {
-                    color:
-                      item.senderId === currentUserId
-                        ? style.white
-                        : style.black,
-                  },
+                  style.messageBubble,
+                  item.senderId === currentUserId
+                    ? style.rightBubble
+                    : style.leftBubble,
                 ]}>
-                {item.text}
-              </Text>
-            </View>
-          )}
+                <Text
+                  style={[
+                    style.messageText,
+                    item.senderId === currentUserId ? style.white : style.black,
+                  ]}>
+                  {item.text}
+                </Text>
+
+                <Text
+                  style={[
+                    style.timeText,
+                    item.senderId === currentUserId ? style.white : style.black,
+                  ]}>
+                  {messageTime}
+                </Text>
+              </View>
+            );
+          }}
           contentContainerStyle={style.messageList}
           showsVerticalScrollIndicator={false}
         />

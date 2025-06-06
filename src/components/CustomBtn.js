@@ -15,8 +15,8 @@ import useThemeStore from '../store/themeStore';
 
 const {height, width} = Dimensions.get('window');
 
-const CustomBtn = ({btnTilte,onPress}) => {
-  const theme = useThemeStore(state=>state.theme);
+const CustomBtn = ({btnTilte, onPress}) => {
+  const theme = useThemeStore(state => state.theme);
   const style = getStyle(theme);
   return (
     <TouchableOpacity style={style.btn} onPress={onPress}>
@@ -29,7 +29,7 @@ const CustomBtn = ({btnTilte,onPress}) => {
 export default CustomBtn;
 
 const getStyle = theme => {
-  const Color =colors[theme];
+  const Color = colors[theme];
   return StyleSheet.create({
     btn: {
       backgroundColor: Color.blue,

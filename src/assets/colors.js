@@ -31,6 +31,11 @@ const light = {
   ModalIconColor: '#A0A1B6',
   iconColor: '#FFFFFF',
   inputFiledColor: '#F0F0F3',
+  chatScreenBack: '#F0F0F3',
+  logoutBtnColor: '#FEECEB',
+  logoutBtnTxtColor:'#F77E75',
+  editModalBg:'#FFFFFF'
+
 };
 
 const dark = {
@@ -66,6 +71,10 @@ const dark = {
   ModalIconColor: '#A0A1B6',
   iconColor: '#3E3E3E',
   inputFiledColor: '#545454',
+  chatScreenBack: '#2C2D3A',
+  logoutBtnColor: '#FEECEB',
+  logoutBtnTxtColor:'#F77E75',
+  editModalBg:'#4A4B62'
 };
 
 export const getThemeColors = theme => {

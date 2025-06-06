@@ -77,3 +77,23 @@ export const chatScreen = {
   messageEn: 'Message',
   messageHi: 'संदेश',
 };
+export const profileScreen = {
+  titleEn: 'Edit Profile',
+  titleHi: 'प्रोफ़ाइल संपादित करें',
+
+  logoutEn: 'Logout',
+  logoutHi: 'लॉगआउट',
+
+  EditProfileEn: 'Edit Profile',
+  NameEn: 'Name',
+  EmailEn: 'Email',
+  PaaswordEn: 'Password',
+  CancelEn: 'Cancel',
+  SaveEn: 'Save',
+  EditProfileHi: 'प्रोफ़ाइल संपादित करें',
+  NameHi: 'नाम',
+  EmailHi: 'ईमेल',
+  PaaswordHi: 'पासवर्ड',
+  CancelHi: 'रद्द करें',
+  SaveHi: 'सहेजें',
+};
