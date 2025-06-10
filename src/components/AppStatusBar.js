@@ -8,7 +8,7 @@ const AppStatusBar = ({background}) => {
   return (
     <StatusBar
       backgroundColor={background}
-      barStyle={theme === 'dark' ? 'light-content' : 'dark-content'}
+      barStyle={theme === 'dark' ? 'dark-content' : 'light-content'}
     />
   );
 };

@@ -7,7 +7,7 @@ export {default as Register} from './screens/Register/Register';
 export {default as SignUp} from './screens/SignUp/SignUp';
 export {default as Splass} from './screens/Splass/SplassScreen';
 export {default as Welcome} from './screens/Welcome/Welcome';
-export {default as UserInfo} from './screens/UserInfo/UserInfo'
+export {default as UserInfo} from './screens/UserInfo/UserInfo';
 
 //Main Tab Screens
 
@@ -18,5 +18,6 @@ export {default as More} from './screens/More/More';
 
 //chat screen
 export {default as ChatConversation} from './screens/ChatConversation/ChatConversation';
-
-
+export {default as VoiceCallPage} from './screens/VoiceCall/VoiceCallPage';
+export {default as VideoCallPage} from './screens/VoiceCall/VoiceCallPage';
+export {default as CreateGroup} from './screens/CreateGroup/CreateGroup';

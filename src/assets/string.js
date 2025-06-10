@@ -97,3 +97,13 @@ export const profileScreen = {
   CancelHi: 'रद्द करें',
   SaveHi: 'सहेजें',
 };
+export const groupScreen = {
+  createGroupEn: 'Create Group',
+  createGroupHi: 'समूह बनाएँ',
+  groupNameEn: "Group's Name",
+  groupNameHi: 'समूह का नाम',
+  enterGroupEn: "Enter Group's Name",
+  enterGroupHi: 'समूह का नाम दर्ज करें',
+  MembersEn: 'Members',
+  MembersHn: 'सदस्य',
+};

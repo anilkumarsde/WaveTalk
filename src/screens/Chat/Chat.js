@@ -109,6 +109,7 @@ const Chat = () => {
       {/* modal for add Friend */}
       <AddfriendModal
         isVisible={isVisible}
+        setVisible={setVisible}
         theme={theme}
         onClose={() => setVisible(false)}
       />

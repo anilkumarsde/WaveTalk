@@ -5,6 +5,7 @@ import {
   Text,
   View,
   TouchableWithoutFeedback,
+  TouchableOpacity,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import colors from '../assets/colors';
@@ -13,15 +14,23 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Fonts from '../assets/Fonts';
 import {getDeviceLanguage} from '../assets/checkLanguage';
 import {chatScreen} from '../assets/string';
+import {useNavigation} from '@react-navigation/native';
 
 const {height, width} = Dimensions.get('window');
 
-const AddfriendModal = ({isVisible, theme, onClose}) => {
+const AddfriendModal = ({isVisible, theme, onClose, setVisible}) => {
   const style = getStyle(theme);
   const [language, setlanuage] = useState('en');
   useEffect(() => {
     setlanuage(getDeviceLanguage());
   }, [language, setlanuage]);
+
+  const navigation = useNavigation();
+
+  function MoveToCreateGrupScreen() {
+    navigation.navigate('CreateGroup');
+    setVisible(false);
+  }
 
   return (
     <Modal visible={isVisible} transparent animationType="fade">
@@ -30,7 +39,7 @@ const AddfriendModal = ({isVisible, theme, onClose}) => {
           <TouchableWithoutFeedback>
             <View style={style.container}>
               {/* First Row */}
-              <View style={style.row}>
+              <TouchableOpacity style={style.row}>
                 <FontAwesome6
                   name="user"
                   size={17}
@@ -41,10 +50,12 @@ const AddfriendModal = ({isVisible, theme, onClose}) => {
                     ? chatScreen?.addFrindeEn
                     : chatScreen?.addFrindeHi}
                 </Text>
-              </View>
+              </TouchableOpacity>
 
               {/* Second Row */}
-              <View style={style.row}>
+              <TouchableOpacity
+                style={style.row}
+                onPress={MoveToCreateGrupScreen}>
                 <MaterialIcons
                   name="groups"
                   size={20}
@@ -55,7 +66,7 @@ const AddfriendModal = ({isVisible, theme, onClose}) => {
                     ? chatScreen?.CreateGroupEn
                     : chatScreen?.CreateGroupHi}
                 </Text>
-              </View>
+              </TouchableOpacity>
             </View>
           </TouchableWithoutFeedback>
         </View>
