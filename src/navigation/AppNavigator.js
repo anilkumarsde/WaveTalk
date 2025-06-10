@@ -10,6 +10,7 @@ import SignUp from '../screens/SignUp/SignUp';
 import UserInfo from '../screens/UserInfo/UserInfo';
 import ChatConversation from '../screens/ChatConversation/ChatConversation';
 import VoiceCallPage from '../screens/VoiceCall/VoiceCallPage';
+import VideoCallPage from '../screens/VideoCall/VideoCallPage';
 
 const Stack = createNativeStackNavigator();
 
@@ -28,6 +29,7 @@ const AppNavigator = () => {
       <Stack.Screen name="BottomTabNavigator" component={BottomTabNavigator} />
       <Stack.Screen name="ChatConversation" component={ChatConversation} />
       <Stack.Screen name="VoiceCallPage" component={VoiceCallPage} />
+      <Stack.Screen name="VideoCallPage" component={VideoCallPage} />
     </Stack.Navigator>
   );
 };

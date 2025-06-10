@@ -103,20 +103,8 @@ const ChatConversation = () => {
 
   // voice call handler
 
-  function voicecallHandler(userID, callID, userName, appID, appSign) {
-    // console.log('voice call started');
-    // console.log('currentuserId', userID);
-    // console.log('callID', callID);
-    // console.log('userName', userName);
-    // console.log('appID', appID);
-    // console.log('appSign', appSign);
-    navigation.navigate('VoiceCallPage', {
-      userID,
-      callID,
-      userName,
-      appID,
-      appSign,
-    });
+  function callHandler(ModeOfCall, otherUserName) {
+    navigation.navigate(ModeOfCall, {otherUserName});
   }
 
   const style = getStyle(theme);
@@ -156,7 +144,8 @@ const ChatConversation = () => {
           <Text style={style.userName}>{outerUserName}</Text>
         </View>
         <View style={style.rightWrapper}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => callHandler('VideoCallPage', outerUserName)}>
             <Image
               source={
                 theme === 'dark'
@@ -168,13 +157,7 @@ const ChatConversation = () => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              // const callID = [currentUserId, otherUserId].sort().join('_');
-              const callID = '9199245122';
-              const userName = 'Anil'; // Replace with current user's actual name
-              const appID = 484634835;
-              const appSign = '42b3f06f3c1a8197e76f6535071567c6210dbd77f16';
-
-              voicecallHandler(currentUserId, callID, userName, appID, appSign);
+              callHandler('VoiceCallPage', outerUserName);
             }}>
             <Image
               source={theme === 'dark' ? images?.PhoneLight : images?.Phone}
