@@ -13,11 +13,16 @@ import colors from '../assets/colors';
 import {getDeviceLanguage} from '../assets/checkLanguage';
 import {profileScreen} from '../assets/string';
 import Fonts from '../assets/Fonts';
-
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+import Toast from 'react-native-simple-toast';
 const {width, height} = Dimensions.get('window');
 
 const EditProfileModal = ({editVisible, setEditVisible}) => {
   const [language, setLanguage] = useState('en');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const theme = useThemeStore(state => state.theme);
   const styles = getStyle(theme);
 
@@ -29,10 +34,47 @@ const EditProfileModal = ({editVisible, setEditVisible}) => {
     setEditVisible(false);
   };
 
-  const handleSave = () => {
-    // TODO: Add logic to save profile data
-    console.log('Saving profile...');
-    setEditVisible(false);
+  const handleSave = async (name, email, password) => {
+    const userId = auth().currentUser.uid;
+    const currentUser = auth().currentUser;
+    if ((email, name, password)) {
+      try {
+        const snapshot = await firestore()
+          .collection('user')
+          .where('email', '==', email)
+          .get();
+
+        const emailExists = snapshot.docs.some(doc => doc.id !== userId);
+        if (emailExists) {
+          Toast.show('Email already in use by another user!');
+          return;
+        }
+
+        await firestore().collection('user').doc(userId).update({
+          name: name,
+          email: email,
+          password: password,
+        });
+        console.log('profile updated in firestore');
+
+        if (currentUser.email !== email) {
+          await currentUser.sendEmailVerification();
+          Toast.show('Verify your new email first. Check your inbox.');
+          return;
+        }
+
+        if (password.length > 0) {
+          await currentUser.updatePassword(password);
+        }
+
+        Toast.show('Profile update successfully!');
+        console.log('profile updated in firebase auth as well');
+        setEditVisible(false);
+      } catch (error) {
+        console.log('something went wrong', error);
+        Toast.show('Something went wrong!');
+      }
+    }
   };
 
   return (
@@ -56,6 +98,8 @@ const EditProfileModal = ({editVisible, setEditVisible}) => {
             }
             style={styles.input}
             placeholderTextColor={colors[theme].text2}
+            value={name}
+            onChangeText={setName}
           />
           <TextInput
             placeholder={
@@ -66,6 +110,8 @@ const EditProfileModal = ({editVisible, setEditVisible}) => {
             keyboardType="email-address"
             style={styles.input}
             placeholderTextColor={colors[theme].text2}
+            value={email}
+            onChangeText={setEmail}
           />
           <TextInput
             placeholder={
@@ -76,6 +122,9 @@ const EditProfileModal = ({editVisible, setEditVisible}) => {
             secureTextEntry
             style={styles.input}
             placeholderTextColor={colors[theme].text2}
+            value={password}
+            onChangeText={setPassword}
+            maxLength={6}
           />
 
           {/* Buttons */}
@@ -91,7 +140,7 @@ const EditProfileModal = ({editVisible, setEditVisible}) => {
                 styles.button,
                 {backgroundColor: colors[theme].lightBlue},
               ]}
-              onPress={handleSave}>
+              onPress={() => handleSave(name, email, password)}>
               <Text style={styles.buttonText}>Save</Text>
             </TouchableOpacity>
           </View>
@@ -157,12 +206,14 @@ const getStyle = theme => {
       flexDirection: 'row',
       justifyContent: 'space-between',
       marginTop: height * 0.09,
+      gap: width * 0.04,
+      //   width:'100%'
     },
     button: {
       flex: 1,
       paddingVertical: height * 0.025,
       borderRadius: width * 0.015,
-      marginHorizontal: width * 0.01,
+      marginHorizontal: width * 0.0,
       alignItems: 'center',
     },
     buttonText: {

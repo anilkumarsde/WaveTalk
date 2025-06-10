@@ -4,7 +4,6 @@ import {
   TouchableOpacity,
   Image,
   KeyboardAvoidingView,
-  Platform,
   TextInput,
   FlatList,
 } from 'react-native';
@@ -21,6 +20,7 @@ import {chatScreen} from '../../assets/string';
 import images from '../../assets/image';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
+import Toast from 'react-native-simple-toast';
 
 const ChatConversation = () => {
   const route = useRoute();
@@ -33,6 +33,8 @@ const ChatConversation = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
+    setLanguage(getDeviceLanguage());
+
     const unsubscribe = firestore()
       .collection('chats')
       .doc(chatid)
@@ -43,12 +45,24 @@ const ChatConversation = () => {
           if (!snapshot?.empty) {
             const list = [];
             snapshot.forEach(doc => {
-              list.push({id: doc.id, ...doc.data()});
+              const data = doc.data();
+              const formattedTime =
+                data.createdAt && data.createdAt.toDate
+                  ? data.createdAt.toDate().toLocaleTimeString([], {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })
+                  : '';
+
+              list.push({
+                id: doc.id,
+                ...data,
+                formattedTime,
+              });
             });
             setMessage(list);
             console.log(list, 'list of messages');
           } else {
-            // no messages yet, just set empty array
             setMessage([]);
             console.log('list of message is empty');
           }
@@ -61,17 +75,16 @@ const ChatConversation = () => {
     return () => unsubscribe();
   }, []);
 
-  useEffect(() => {
-    setLanguage(getDeviceLanguage());
-  }, []);
-
   function moveBack() {
     navigation.goBack();
   }
 
   const sendMessage = async () => {
     try {
-      if (inputText.trim() === '') return;
+      if (inputText.trim() === '') {
+        Toast.show('Write something');
+        return;
+      }
       await firestore()
         .collection('chats')
         .doc(chatid)
@@ -87,6 +100,24 @@ const ChatConversation = () => {
       console.log('something went wrong', error);
     }
   };
+
+  // voice call handler
+
+  function voicecallHandler(userID, callID, userName, appID, appSign) {
+    // console.log('voice call started');
+    // console.log('currentuserId', userID);
+    // console.log('callID', callID);
+    // console.log('userName', userName);
+    // console.log('appID', appID);
+    // console.log('appSign', appSign);
+    navigation.navigate('VoiceCallPage', {
+      userID,
+      callID,
+      userName,
+      appID,
+      appSign,
+    });
+  }
 
   const style = getStyle(theme);
   return (
@@ -135,7 +166,16 @@ const ChatConversation = () => {
               style={style.callIcon}
             />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              // const callID = [currentUserId, otherUserId].sort().join('_');
+              const callID = '9199245122';
+              const userName = 'Anil'; // Replace with current user's actual name
+              const appID = 484634835;
+              const appSign = '42b3f06f3c1a8197e76f6535071567c6210dbd77f16';
+
+              voicecallHandler(currentUserId, callID, userName, appID, appSign);
+            }}>
             <Image
               source={theme === 'dark' ? images?.PhoneLight : images?.Phone}
               style={style.callIcon}
@@ -149,14 +189,7 @@ const ChatConversation = () => {
           data={message}
           keyExtractor={item => item.id}
           renderItem={({item}) => {
-            const messageTime =
-              item.createdAt && item.createdAt.toDate
-                ? item.createdAt.toDate().toLocaleTimeString([], {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })
-                : '';
-
+            const messageTime = item.formattedTime;
             return (
               <View
                 style={[
@@ -178,7 +211,8 @@ const ChatConversation = () => {
                     style.timeText,
                     item.senderId === currentUserId ? style.white : style.black,
                   ]}>
-                  {messageTime}
+                  {item.formattedTime || '...'}{' '}
+                  {/* fallback if time not yet available */}
                 </Text>
               </View>
             );
@@ -191,8 +225,7 @@ const ChatConversation = () => {
       {/* Bottom Input Field */}
       <KeyboardAvoidingView
         keyboardVerticalOffset={10}
-        style={style.keyboardView} // optional if you want flex
-      >
+        style={style.keyboardView}>
         <View style={style.inputContainer}>
           <TextInput
             value={inputText}

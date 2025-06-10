@@ -5,6 +5,10 @@ import AppNavigator from './src/navigation/AppNavigator';
 import {useColorScheme} from 'react-native';
 import useThemeStore from './src/store/themeStore';
 import {t} from 'i18next';
+import {
+  ZegoUIKitPrebuiltCallInvitation,
+  ZegoCallInvitationDialog,
+} from '@zegocloud/zego-uikit-prebuilt-call-rn';
 
 const App = () => {
   const theme = useColorScheme();
@@ -16,6 +20,8 @@ const App = () => {
 
   return (
     <NavigationContainer>
+      <ZegoCallInvitationDialog />
+
       <AppNavigator />
     </NavigationContainer>
   );

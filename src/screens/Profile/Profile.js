@@ -17,8 +17,9 @@ import {getDeviceLanguage} from '../../assets/checkLanguage';
 import {profileScreen} from '../../assets/string';
 import auth from '@react-native-firebase/auth';
 import {useNavigation} from '@react-navigation/native';
-import EdilProfileModal from '../../components/EdilProfileModal';
 import EditProfileModal from '../../components/EdilProfileModal';
+import {CommonActions} from '@react-navigation/native';
+import {copyToClipboard} from '../../assets/clipboardUtils';
 
 const Profile = () => {
   const [isVisible, setVisible] = useState(false);
@@ -69,13 +70,22 @@ const Profile = () => {
     try {
       await auth().signOut();
       await AsyncStorage.setItem('isSignUp', 'false');
-      navigation.navigate('Loding');
+
+      // ✅ Reset navigation stack
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{name: 'Loding'}], // 👈 your loading screen
+        }),
+      );
+
       console.log('signOut');
-      ToastAndroid.show('signout successful');
+      ToastAndroid.show('Sign out successful', ToastAndroid.SHORT);
     } catch (error) {
-      console.log('something went wrong', error);
+      console.log('Something went wrong', error);
     }
   }
+
   return (
     <View style={style.container}>
       <AppStatusBar background={colors[theme].lightBlue} />
@@ -106,7 +116,7 @@ const Profile = () => {
               <Text style={style.key}>Email : </Text>
               <Text style={style.value}>{userData?.email}</Text>
             </View>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => copyToClipboard(userData?.email)}>
               <Ionicons
                 name="copy-outline"
                 size={20}
@@ -120,7 +130,7 @@ const Profile = () => {
               <Text style={style.key}>Password : </Text>
               <Text style={style.value}>{userData?.password}</Text>
             </View>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => copyToClipboard(userData?.password)}>
               <Ionicons
                 name="copy-outline"
                 size={20}

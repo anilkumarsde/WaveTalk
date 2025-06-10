@@ -28,7 +28,7 @@ const getStyle = theme => {
     },
     title: {
       fontFamily: Fonts.RobotoBold,
-      color: Colors.blue,
+      color: Colors.text3,
       fontSize: width * 0.055,
     },
     mainWrapper: {

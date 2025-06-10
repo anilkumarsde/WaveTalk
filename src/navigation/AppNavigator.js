@@ -9,6 +9,7 @@ import Otp from '../screens/Otp/Otp';
 import SignUp from '../screens/SignUp/SignUp';
 import UserInfo from '../screens/UserInfo/UserInfo';
 import ChatConversation from '../screens/ChatConversation/ChatConversation';
+import VoiceCallPage from '../screens/VoiceCall/VoiceCallPage';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +27,7 @@ const AppNavigator = () => {
       <Stack.Screen name="UserInfo" component={UserInfo} />
       <Stack.Screen name="BottomTabNavigator" component={BottomTabNavigator} />
       <Stack.Screen name="ChatConversation" component={ChatConversation} />
+      <Stack.Screen name="VoiceCallPage" component={VoiceCallPage} />
     </Stack.Navigator>
   );
 };
