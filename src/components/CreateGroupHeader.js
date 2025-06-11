@@ -15,12 +15,15 @@ import useThemeStore from '../store/themeStore';
 import colors from '../assets/colors';
 import {getDeviceLanguage} from '../assets/checkLanguage';
 import {groupScreen} from '../assets/string';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import Fonts from '../assets/Fonts';
+import AddMembersModal from './AddMembersModal';
 
 const {height, width} = Dimensions.get('window');
 
 const CreateGroupHeader = () => {
   const [language, setLanguage] = useState('en');
+  const [visible, setVisible] = useState(false);
   const theme = useThemeStore(state => state.theme);
   const style = getStyle(theme);
   const Color = colors[theme];
@@ -32,6 +35,8 @@ const CreateGroupHeader = () => {
 
   return (
     <View style={style.container}>
+      <AddMembersModal visible={visible} setVisible={setVisible} />
+
       <View style={style.headerContainer}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
@@ -65,9 +70,16 @@ const CreateGroupHeader = () => {
             {language == 'en' ? groupScreen?.MembersEn : groupScreen?.MembersHn}
           </Text>
 
-          <TouchableOpacity style={style.addMemberButton}>
+          <TouchableOpacity
+            style={style.addMemberButton}
+            activeOpacity={0.5}
+            onPress={() => setVisible(true)}>
+            <AntDesign name="plus" size={19} color={colors[theme].blue1} />
+
             <Text style={style.addMemberText}>
-              {language == 'en' ? 'Add Member' : 'सदस्य जोड़ें'}
+              {language == 'en'
+                ? groupScreen?.addMembersEn
+                : groupScreen?.addMembersHi}
             </Text>
           </TouchableOpacity>
         </View>
@@ -126,16 +138,19 @@ const getStyle = theme => {
       marginTop: height * 0.01,
       paddingVertical: height * 0.015,
       paddingHorizontal: width * 0.04,
-      backgroundColor: Color.lightBlue,
+      backgroundColor: '#ECF9FF',
       borderRadius: width * 0.02,
       alignItems: 'center',
       justifyContent: 'center',
+      flexDirection: 'row',
+      gap: width * 0.02,
     },
 
     addMemberText: {
-      color: Color.white,
+      color: Color.blue1,
       fontSize: width * 0.04,
-      fontFamily: Fonts.RobotoMedium,
+      fontFamily: Fonts.RobotoSemiBold,
+      marginTop: height * 0.005,
     },
     addMemberWrapper: {
       marginTop: height * 0.04,

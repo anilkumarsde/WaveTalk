@@ -106,4 +106,10 @@ export const groupScreen = {
   enterGroupHi: 'समूह का नाम दर्ज करें',
   MembersEn: 'Members',
   MembersHn: 'सदस्य',
+  addMembersEn: 'Add members to group',
+  addMembersHi: 'समूह में सदस्य जोड़ें',
+  SearchEn:'Search',
+  SearchHi: 'खोजें'
+
+
 };
