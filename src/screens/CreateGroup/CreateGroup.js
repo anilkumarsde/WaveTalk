@@ -12,8 +12,7 @@ const CreateGroup = () => {
   return (
     <View style={style.container}>
       <AppStatusBar background={colors[theme].lightBlue} />
-      <CreateGroupHeader/>
-
+      <CreateGroupHeader />
     </View>
   );
 };

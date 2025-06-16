@@ -23,9 +23,11 @@ const {height, width} = Dimensions.get('window');
 
 const Chat = () => {
   const setTheme = useThemeStore(state => state.setTheme);
+  const userData = useThemeStore(state => state.userData);
+  const setUserData = useThemeStore(state => state.setUserData);
   const theme = useColorScheme();
   const [isVisible, setVisible] = useState(false);
-  const [userData, setUserData] = useState([]);
+  // const [userData, setUserData] = useState([]);
   const [userId, setUserId] = useState('');
 
   const style = getStyle(theme);

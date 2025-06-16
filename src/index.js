@@ -21,3 +21,4 @@ export {default as ChatConversation} from './screens/ChatConversation/ChatConver
 export {default as VoiceCallPage} from './screens/VoiceCall/VoiceCallPage';
 export {default as VideoCallPage} from './screens/VoiceCall/VoiceCallPage';
 export {default as CreateGroup} from './screens/CreateGroup/CreateGroup';
+export {default as GroupChatScreen} from './screens/GroupChatScreen/GroupChatScreen.js';

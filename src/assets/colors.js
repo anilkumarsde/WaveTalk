@@ -34,7 +34,8 @@ const light = {
   chatScreenBack: '#F0F0F3',
   logoutBtnColor: '#FEECEB',
   logoutBtnTxtColor:'#F77E75',
-  editModalBg:'#FFFFFF'
+  editModalBg:'#FFFFFF',
+  cancelBtnColor:'#ECF9FF'
 
 };
 
@@ -74,7 +75,9 @@ const dark = {
   chatScreenBack: '#2C2D3A',
   logoutBtnColor: '#FEECEB',
   logoutBtnTxtColor:'#F77E75',
-  editModalBg:'#4A4B62'
+  editModalBg:'#4A4B62',
+  cancelBtnColor:'#ECF9FF'
+
 };
 
 export const getThemeColors = theme => {

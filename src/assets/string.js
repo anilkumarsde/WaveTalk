@@ -108,8 +108,10 @@ export const groupScreen = {
   MembersHn: 'सदस्य',
   addMembersEn: 'Add members to group',
   addMembersHi: 'समूह में सदस्य जोड़ें',
-  SearchEn:'Search',
-  SearchHi: 'खोजें'
-
-
+  SearchEn: 'Search',
+  SearchHi: 'खोजें',
+  CancelEn: 'Cancel',
+  CancelHi: 'रद्द करें',
+  addEn: 'Add',
+  addHn: 'जोड़ें',
 };
