@@ -1,162 +1,284 @@
 import {
   View,
   Text,
-  FlatList,
-  TextInput,
   TouchableOpacity,
-  StyleSheet,
+  Image,
   KeyboardAvoidingView,
-  Platform,
+  TextInput,
+  FlatList,
 } from 'react-native';
-import React, {useState, useEffect, useRef} from 'react';
-import {useRoute} from '@react-navigation/native';
-import firestore from '@react-native-firebase/firestore';
+import React, {useEffect, useState} from 'react';
+import getStyle from './styles';
+import useThemeStore from '../../store/themeStore';
+import AppStatusBar from '../../components/AppStatusBar';
+import colors from '../../assets/colors';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import Entypo from 'react-native-vector-icons/Entypo';
+import {getDeviceLanguage} from '../../assets/checkLanguage';
+import {chatScreen} from '../../assets/string';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import images from '../../assets/image';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+import Toast from 'react-native-simple-toast';
 
 const GroupChatScreen = () => {
   const route = useRoute();
   const {groupId, groupName, members} = route.params;
-
+  const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
-  const [inputText, setInputText] = useState('');
-  const flatListRef = useRef();
+  const [language, setLanguage] = useState('en');
+  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUserName, setCurrentUserName] = useState('');
+  const theme = useThemeStore(state => state.theme);
 
-  const memberMap = {};
-  members.forEach(member => {
-    memberMap[member.uid] = member;
-  });
+  const style = getStyle(theme);
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    setLanguage(getDeviceLanguage());
+    async function getCurrentUserId() {
+      try {
+        const id = await AsyncStorage.getItem('userid');
+        const userName = await AsyncStorage.getItem('userName');
+        setCurrentUserName(userName);
+        console.log('current user id', id);
+        console.log('current user name in group chat screen', userName);
+        setCurrentUser(id);
+      } catch (error) {
+        console.log('some error to find current user', error);
+      }
+    }
+    getCurrentUserId();
+  }, []);
+
+  // real time listner
 
   useEffect(() => {
     const unsubscribe = firestore()
       .collection('groups')
       .doc(groupId)
       .collection('messages')
-      .orderBy('timestamp', 'asc')
+      .orderBy('createdAt', 'asc')
       .onSnapshot(snapshot => {
-        const msgs = snapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setMessages(msgs);
-      });
+        const list = [];
 
+        snapshot.forEach(item => {
+          const data = item.data();
+          const formattedTime =
+            data.createdAt && data.createdAt.toDate
+              ? data.createdAt.toDate().toLocaleTimeString([], {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })
+              : '';
+
+          list.push({
+            id: item.id,
+            ...data,
+            formattedTime,
+          });
+          setMessages(list);
+        });
+      });
     return () => unsubscribe();
-  }, [groupId]);
+  }, []);
 
-  const sendMessage = async () => {
-    const currentUser = auth().currentUser;
-    if (!inputText.trim()) return;
-
-    await firestore()
-      .collection('groups')
-      .doc(groupId)
-      .collection('messages')
-      .add({
-        text: inputText,
-        senderId: currentUser.uid,
-        senderName: memberMap[currentUser.uid]?.name || 'Unknown',
-        timestamp: firestore.FieldValue.serverTimestamp(),
-      });
-
-    setInputText('');
-  };
-
-  const renderItem = ({item}) => {
-    const isCurrentUser = item.senderId === auth().currentUser?.uid;
-    const senderName = memberMap[item.senderId]?.name || 'Unknown';
-
-    return (
-      <View
-        style={[
-          styles.messageContainer,
-          isCurrentUser ? styles.myMessage : styles.theirMessage,
-        ]}>
-        {!isCurrentUser && <Text style={styles.senderName}>{senderName}</Text>}
-        <Text style={styles.messageText}>{item.text}</Text>
-      </View>
-    );
+  // send message handler
+  const sendMessageHandler = async (
+    message,
+    groupId,
+    currentUser,
+    currentUserName,
+  ) => {
+    if (message.trim().length === 0) {
+      Toast.show('write something');
+      return;
+    }
+    try {
+      await firestore()
+        .collection('groups')
+        .doc(groupId)
+        .collection('messages')
+        .add({
+          senderId: currentUser,
+          senderName: currentUserName,
+          text: message,
+          createdAt: firestore.FieldValue.serverTimestamp(),
+        });
+      console.log('message sent and added to firestore');
+      setMessage('');
+    } catch (error) {
+      console.log('something went wrong to send message', error);
+    }
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: '#fff'}}>
-      <FlatList
-        ref={flatListRef}
-        data={messages}
-        keyExtractor={item => item.id}
-        renderItem={renderItem}
-        onContentSizeChange={() =>
-          flatListRef.current?.scrollToEnd({animated: true})
-        }
-        onLayout={() => flatListRef.current?.scrollToEnd({animated: true})}
-        contentContainerStyle={{paddingVertical: 10}}
-      />
+    <View style={style.container}>
+      {/* app status bar */}
+      <AppStatusBar background={colors[theme].background} />
+      {/* Top header */}
+      <View style={style.topHeaderWrapper}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <MaterialIcons
+            name="arrow-back"
+            color={colors[theme].text3}
+            size={20}
+          />
+        </TouchableOpacity>
+        <Text style={style.messageTxt}>
+          {language === 'en' ? chatScreen?.messageEn : chatScreen?.messageHi}
+        </Text>
+        <TouchableOpacity>
+          <Entypo
+            name="dots-three-vertical"
+            color={colors[theme].text3}
+            size={20}
+          />
+        </TouchableOpacity>
+        {/*  */}
+      </View>
+      {/* profile Wrapper */}
+      <View style={style.profileWrapper}>
+        <View style={style.leftWrapper}>
+          <MaterialIcons name="groups" color={colors[theme].text3} size={30} />
+          <View style={style.grupNameWrapper}>
+            <Text style={style.groupNameTxt}>{groupName}</Text>
+            <Text style={style.memberTxt}>{`${members.length} members`} </Text>
+          </View>
+        </View>
+        <View style={style.rightWrapper}>
+          <TouchableOpacity>
+            <Image
+              source={
+                theme === 'dark' ? images?.VideocameraLight : images.Videocamera
+              }
+              style={style.callImg}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Image
+              source={theme === 'dark' ? images?.PhoneLight : images.Phone}
+              style={style.callImg}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+      <View style={style.mainWrapper}>
+        <FlatList
+          data={messages}
+          keyExtractor={item => item.id}
+          contentContainerStyle={{paddingBottom: 10}}
+          showsVerticalScrollIndicator={false}
+          renderItem={({item}) => {
+            const isCurrentUser = item.senderId === currentUser;
+            return (
+              <View
+                style={[
+                  style.itemlist,
+                  {alignSelf: isCurrentUser ? 'flex-end' : 'flex-start'},
+                ]}>
+                <View style={style.messageTxtWrapper}>
+                  {!isCurrentUser && (
+                    <View style={style.senderNameWrapper}>
+                      <FontAwesome6
+                        name="user-large"
+                        color={colors[theme].text2}
+                        size={12}
+                      />
+                      <Text style={style.senderName}>{item.senderName}</Text>
+                    </View>
+                  )}
+                  <View
+                    style={[
+                      style.textMessageBox,
+                      {
+                        backgroundColor: isCurrentUser
+                          ? colors[theme].lightBlue
+                          : colors[theme].white,
+                      },
+                    ]}>
+                    <Text
+                      style={[
+                        style.textMessage,
+                        {color: isCurrentUser ? colors[theme].white : 'black'},
+                      ]}>
+                      {item.text}
+                    </Text>
+                    <Text
+                      style={[
+                        style.time,
+                        {color: isCurrentUser ? colors[theme].white : 'black'},
+                      ]}>
+                      {item?.formattedTime}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            );
+          }}
+        />
+        {/* <FlatList
+    data={messages}
+    keyExtractor={item => item.id}
+    contentContainerStyle={{paddingVertical: 10, paddingHorizontal: 12}}
+    renderItem={({item}) => {
+      const isCurrentUser = item.senderId === currentUser;
+
+      return (
+        <View
+          style={{
+            alignSelf: isCurrentUser ? 'flex-end' : 'flex-start',
+            backgroundColor: isCurrentUser ? '#DCF8C5' : '#FFFFFF',
+            borderRadius: 12,
+            marginBottom: 10,
+            maxWidth: '75%',
+            padding: 10,
+            elevation: 2,
+            shadowColor: '#000',
+            shadowOpacity: 0.1,
+            shadowOffset: {width: 0, height: 1},
+            shadowRadius: 1,
+          }}>
+          {!isCurrentUser && (
+            <Text style={{fontWeight: 'bold', marginBottom: 3, color: '#333'}}>
+              {item.senderName}
+            </Text>
+          )}
+          <Text style={{color: '#333'}}>{item.text}</Text>
+        </View>
+      );
+    }}
+  /> */}
+      </View>
 
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={80}
-        style={styles.inputContainer}>
-        <TextInput
-          style={styles.textInput}
-          placeholder="Type a message..."
-          value={inputText}
-          onChangeText={setInputText}
-        />
-        <TouchableOpacity onPress={sendMessage} style={styles.sendButton}>
-          <Text style={{color: 'white'}}>Send</Text>
-        </TouchableOpacity>
+        keyboardVerticalOffset={10}
+        style={style.keyboardView}>
+        <View style={style.inputWrapper}>
+          <TextInput
+            placeholder="write something"
+            style={style.textInputfield}
+            placeholderTextColor={colors[theme].text3}
+            value={message}
+            onChangeText={setMessage}
+          />
+          <TouchableOpacity
+            onPress={() =>
+              sendMessageHandler(message, groupId, currentUser, currentUserName)
+            }>
+            <MaterialIcons
+              name={'send'}
+              size={25}
+              color={colors[theme].lightBlue}
+            />
+          </TouchableOpacity>
+        </View>
       </KeyboardAvoidingView>
     </View>
   );
 };
 
 export default GroupChatScreen;
-
-const styles = StyleSheet.create({
-  messageContainer: {
-    marginVertical: 5,
-    marginHorizontal: 10,
-    padding: 10,
-    borderRadius: 10,
-    maxWidth: '70%',
-  },
-  myMessage: {
-    alignSelf: 'flex-end',
-    backgroundColor: '#DCF8C5',
-  },
-  theirMessage: {
-    alignSelf: 'flex-start',
-    backgroundColor: '#EEE',
-  },
-  senderName: {
-    fontSize: 12,
-    color: 'gray',
-    marginBottom: 2,
-  },
-  messageText: {
-    fontSize: 16,
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    padding: 10,
-    borderTopWidth: 1,
-    borderColor: '#ccc',
-    backgroundColor: '#fff',
-  },
-  textInput: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 20,
-    paddingHorizontal: 15,
-    height: 40,
-    backgroundColor: '#f2f2f2',
-  },
-  sendButton: {
-    marginLeft: 10,
-    backgroundColor: '#007bff',
-    paddingHorizontal: 15,
-    borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});

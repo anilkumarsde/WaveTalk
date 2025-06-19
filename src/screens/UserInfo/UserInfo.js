@@ -74,6 +74,7 @@ const UserInfo = () => {
         });
         // setUserId(uid);
         await AsyncStorage.setItem('userid', `${uid}`);
+        await AsyncStorage.setItem('userName', `${name}`);
         console.log('User created successfully', userCredential);
         console.log('user data saved to firestore');
         await AsyncStorage.setItem('isSignUp', 'true'); // ✅ store as string
