@@ -22,6 +22,7 @@ import useThemeStore from '../../store/themeStore';
 import auth from '@react-native-firebase/auth';
 import Toast from 'react-native-simple-toast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import firestore from '@react-native-firebase/firestore';
 // import { Image } from 'react-native-svg';
 // import images from '../../assets/image';
 
@@ -86,6 +87,10 @@ const Login = () => {
           password,
         );
         const uid = userCredential.user.uid;
+        const currentuser = await firestore().collection('user').doc(uid).get();
+        console.log('current user in login screen', currentuser?._data.name);
+        await AsyncStorage.setItem('currentuser', `${currentuser.data().name}`);
+        console.log('user crendential', userCredential);
         await AsyncStorage.setItem('userid', `${uid}`);
         console.log('user id at login time', uid);
 

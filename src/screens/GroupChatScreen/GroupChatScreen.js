@@ -42,7 +42,7 @@ const GroupChatScreen = () => {
     async function getCurrentUserId() {
       try {
         const id = await AsyncStorage.getItem('userid');
-        const userName = await AsyncStorage.getItem('userName');
+        const userName = await AsyncStorage.getItem('currentuser');
         setCurrentUserName(userName);
         console.log('current user id', id);
         console.log('current user name in group chat screen', userName);
@@ -220,38 +220,6 @@ const GroupChatScreen = () => {
             );
           }}
         />
-        {/* <FlatList
-    data={messages}
-    keyExtractor={item => item.id}
-    contentContainerStyle={{paddingVertical: 10, paddingHorizontal: 12}}
-    renderItem={({item}) => {
-      const isCurrentUser = item.senderId === currentUser;
-
-      return (
-        <View
-          style={{
-            alignSelf: isCurrentUser ? 'flex-end' : 'flex-start',
-            backgroundColor: isCurrentUser ? '#DCF8C5' : '#FFFFFF',
-            borderRadius: 12,
-            marginBottom: 10,
-            maxWidth: '75%',
-            padding: 10,
-            elevation: 2,
-            shadowColor: '#000',
-            shadowOpacity: 0.1,
-            shadowOffset: {width: 0, height: 1},
-            shadowRadius: 1,
-          }}>
-          {!isCurrentUser && (
-            <Text style={{fontWeight: 'bold', marginBottom: 3, color: '#333'}}>
-              {item.senderName}
-            </Text>
-          )}
-          <Text style={{color: '#333'}}>{item.text}</Text>
-        </View>
-      );
-    }}
-  /> */}
       </View>
 
       <KeyboardAvoidingView
