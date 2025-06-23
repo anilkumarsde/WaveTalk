@@ -1,12 +1,12 @@
 import {useColorScheme, StatusBar} from 'react-native';
 import React from 'react';
 
-const AppStatusBar = ({background}) => {
+const AppStatusBar = ({background,barStyle}) => {
   const theme = useColorScheme();
   return (
     <StatusBar
       backgroundColor={background}
-      barStyle={theme === 'dark' ? 'light-content' : 'dark-content'}
+      barStyle={barStyle}
     />
   );
 };

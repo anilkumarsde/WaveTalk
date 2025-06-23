@@ -114,10 +114,14 @@ const GroupChatScreen = () => {
     }
   };
 
+  function callHandler(modeOfCall) {
+    navigation.navigate(modeOfCall,{currentUserName});
+  }
+
   return (
     <View style={style.container}>
       {/* app status bar */}
-      <AppStatusBar background={colors[theme].background} />
+      <AppStatusBar background={colors[theme].background} barStyle={theme === 'dark' ? 'light-content' : 'dark-content'}/>
       {/* Top header */}
       <View style={style.topHeaderWrapper}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -149,7 +153,7 @@ const GroupChatScreen = () => {
           </View>
         </View>
         <View style={style.rightWrapper}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => callHandler('GroupVideoCall')}>
             <Image
               source={
                 theme === 'dark' ? images?.VideocameraLight : images.Videocamera
@@ -157,7 +161,7 @@ const GroupChatScreen = () => {
               style={style.callImg}
             />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => callHandler('GroupAudioCall')}>
             <Image
               source={theme === 'dark' ? images?.PhoneLight : images.Phone}
               style={style.callImg}

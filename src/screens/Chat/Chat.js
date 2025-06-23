@@ -108,7 +108,7 @@ const Chat = () => {
 
   return (
     <View style={style.container}>
-      <AppStatusBar background={colors[theme].lightBlue} />
+      <AppStatusBar background={colors[theme].lightBlue} barStyle={theme === 'dark' ? 'dark-content' : 'light-content'} />
       {/* modal for add Friend */}
       <AddfriendModal
         isVisible={isVisible}

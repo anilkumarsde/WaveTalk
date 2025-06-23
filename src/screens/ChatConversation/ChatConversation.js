@@ -110,7 +110,10 @@ const ChatConversation = () => {
   const style = getStyle(theme);
   return (
     <View style={style.container}>
-      <AppStatusBar background={colors[theme].background} />
+      <AppStatusBar
+        background={colors[theme].background}
+        barStyle={theme === 'dark' ? 'light-content' : 'dark-content'}
+      />
 
       {/* Header */}
       <View style={style.header}>
