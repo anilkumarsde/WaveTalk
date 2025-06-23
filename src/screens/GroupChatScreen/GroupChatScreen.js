@@ -20,7 +20,6 @@ import {chatScreen} from '../../assets/string';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import images from '../../assets/image';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import Toast from 'react-native-simple-toast';
 

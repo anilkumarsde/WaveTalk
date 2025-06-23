@@ -13,6 +13,8 @@ import VoiceCallPage from '../screens/VoiceCall/VoiceCallPage';
 import VideoCallPage from '../screens/VideoCall/VideoCallPage';
 import CreateGroup from '../screens/CreateGroup/CreateGroup';
 import GroupChatScreen from '../screens/GroupChatScreen/GroupChatScreen';
+import GroupAudioCall from '../screens/GroupAudioCall/GroupAudioCall';
+import GroupVideoCall from '../screens/GroupVideoCall/GroupVideoCall';
 
 const Stack = createNativeStackNavigator();
 
@@ -34,6 +36,8 @@ const AppNavigator = () => {
       <Stack.Screen name="VideoCallPage" component={VideoCallPage} />
       <Stack.Screen name="CreateGroup" component={CreateGroup} />
       <Stack.Screen name="GroupChatScreen" component={GroupChatScreen} />
+      <Stack.Screen name="GroupAudioCall" component={GroupAudioCall} />
+      <Stack.Screen name="GroupVideoCall" component={GroupVideoCall} />
     </Stack.Navigator>
   );
 };
