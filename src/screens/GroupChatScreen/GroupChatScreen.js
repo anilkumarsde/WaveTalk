@@ -115,13 +115,16 @@ const GroupChatScreen = () => {
   };
 
   function callHandler(modeOfCall) {
-    navigation.navigate(modeOfCall,{currentUserName});
+    navigation.navigate(modeOfCall, {currentUserName});
   }
 
   return (
     <View style={style.container}>
       {/* app status bar */}
-      <AppStatusBar background={colors[theme].background} barStyle={theme === 'dark' ? 'light-content' : 'dark-content'}/>
+      <AppStatusBar
+        background={colors[theme].background}
+        barStyle={theme === 'dark' ? 'light-content' : 'dark-content'}
+      />
       {/* Top header */}
       <View style={style.topHeaderWrapper}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -236,6 +239,7 @@ const GroupChatScreen = () => {
             value={message}
             onChangeText={setMessage}
           />
+          {/*  */}
           <TouchableOpacity
             onPress={() =>
               sendMessageHandler(message, groupId, currentUser, currentUserName)
