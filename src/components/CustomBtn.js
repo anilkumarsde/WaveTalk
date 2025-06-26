@@ -20,7 +20,7 @@ const CustomBtn = ({btnTilte, onPress}) => {
   const style = getStyle(theme);
   return (
     <TouchableOpacity style={style.btn} onPress={onPress}>
-      <Text style={style.btnTxt}>{btnTilte}</Text>
+      <Text style={style.btnTxt }>{btnTilte}</Text>
       {/*  */}
     </TouchableOpacity>
   );
@@ -38,6 +38,7 @@ const getStyle = theme => {
       paddingVertical: height * 0.02,
       borderRadius: width * 0.1,
       marginTop: height * 0.07,
+
     },
     btnTxt: {
       fontFamily: Fonts.RobotoSemiBold,
